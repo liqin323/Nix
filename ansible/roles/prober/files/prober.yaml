@@ -1,0 +1,22 @@
+---
+supervisor:
+  host: 172.21.2.40
+  port: 20000
+
+prober:
+  interval: 5
+  logLevel: DEBUG
+
+host:
+  name: vm-liqin
+  ip: 172.21.2.40
+
+services:
+  - id: 1
+    name: appsvc
+    host: 127.0.0.1
+    port: 80
+  - id: 2
+    name: firefox
+  - id: 3
+    name: chrome

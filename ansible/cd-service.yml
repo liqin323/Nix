@@ -1,0 +1,10 @@
+---
+# This Playbook would deploy the whole sonix service cluster.
+
+- hosts: all
+  remote_user: root
+  roles:
+#    - role: python2.7
+    - role: supervisor
+    - role: prober
+    - role: diamond

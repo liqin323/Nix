@@ -1,0 +1,16 @@
+---
+# This Playbook runs plays to install diamond
+
+- name: Make directory for supervisor
+  file: path=/root/liqin/autoscaling/supervisor state=directory
+
+- name: Upload supervisor config file
+  copy: src=supervisord.conf dest=/root/liqin/autoscaling/supervisor/supervisord.conf
+
+- name: Upload running script
+  copy: src=run.sh dest=/root/liqin/autoscaling/supervisor/run.sh mode=655
+
+- name: run supervisor
+  shell: ./run.sh
+  args:
+    chdir: /root/liqin/autoscaling/supervisor
