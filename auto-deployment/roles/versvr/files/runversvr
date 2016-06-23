@@ -1,0 +1,118 @@
+#!/bin/bash
+
+configFile="svr.ini"
+
+if [ -z $1 ] ; then
+SERVERNAME="versvr"
+else
+SERVERNAME=$1
+fi
+
+function ReadINIfile()
+{
+        Key=$1
+        Section=$2
+        Configfile=$3
+        ReadINI=`awk -F '=' '/\['$Section'\]/{a=1}a==1&&$1~/'$Key'/{print $2;exit}' $Configfile`
+        echo "$ReadINI"
+}
+
+uid=`ReadINIfile "uid" "general" "$configFile"`
+
+appsvrhost=`ReadINIfile "appsvr" "hosts" "$configFile"`
+
+key=`ReadINIfile "$SERVERNAME" "key" "$configFile"`
+
+host=`ReadINIfile "$SERVERNAME" "hosts" "$configFile"`
+
+SERVERCMD="./$SERVERNAME -k $key -a $appsvrhost -h $host -u $uid"
+echo $SERVERCMD
+
+#SUDOSERVERCMD="sudo $SERVERCMD"
+SUDOSERVERCMD=""
+LOGFILENAME="versvr.log"
+
+ALIVECHECKCMD="./check_svralive_http -u http://127.0.0.1:443/v2/echo -n $SERVERNAME"
+
+NOSVRPROCESSMSG="Failed to find $SERVERNAME in process list, auto restart it!"
+NOSVRRESPONSEMSG="Failed to get response from  $SERVERNAME, kill and auto restart it!"
+
+DATEFORMAT="+%Y-%m-%d %H:%M:%S "
+
+CORRECTMSG="ok, $SERVERNAME is working properly!"
+
+
+#$1 message
+showMsg()
+{
+	CurrentTime=`date "$DATEFORMAT"`
+	outputMsg="$CurrentTime""$1"		
+	echo "$outputMsg"
+	echo "$outputMsg">>"$LOGFILENAME"
+}
+
+#$1: process ID
+#$2: process name
+killProcessByID()
+{
+	if test -n "$1"
+	then
+		echo "kill Process: $1($2)"
+		if test -z "$SUDOSERVERCMD"		
+		then
+			kill -9 "$1"
+		else
+                	sudo kill -9 "$1"
+		fi
+	fi
+}
+
+showMsg "$0 startting ..."
+
+
+while :
+do
+	PSID=`ps -ef |grep "$SERVERCMD"|grep -v grep | awk '{print $2}'`
+	if test -z "$PSID"
+	then
+		showMsg "$NOSVRPROCESSMSG"
+
+		if test -z "$SUDOSERVERCMD"
+		then
+			$SERVERCMD  &
+		else	
+			sudoPSID=`ps -ef |grep "$SUDOSERVERCMD"|grep -v grep | awk '{print $2}'`		
+			killProcessByID "$sudoPSID" "$SUDOSERVERCMD"
+
+			$SUDOSERVERCMD  &
+		fi
+	else
+		CheckResult=`$ALIVECHECKCMD`
+		if test "$CheckResult" != "$CORRECTMSG"
+		then
+			echo "check server status result=$CheckResult"
+
+			showMsg "$NOSVRRESPONSEMSG"
+
+			if test -z "$SUDOSERVERCMD"
+			then
+				killProcessByID "$PSID" "$SERVERCMD"
+				$SERVERCMD  &
+			else	
+				sudoPSID=`ps -ef |grep "$SUDOSERVERCMD"|grep -v grep | awk '{print $2}'`
+				killProcessByID "$sudoPSID" "$SUDOSERVERCMD"
+
+				PSID=`ps -ef |grep "$SERVERCMD"|grep -v grep | awk '{print $2}'`
+				killProcessByID "$PSID"	"$SERVERCMD"
+
+				$SUDOSERVERCMD  &
+			fi
+
+		fi
+
+	fi
+
+
+sleep 60
+
+done

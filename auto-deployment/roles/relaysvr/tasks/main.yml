@@ -1,0 +1,17 @@
+---
+# This Playbook runs plays to install relaysvr
+
+- name: Make directory for relaysvr
+  file: path={{working_directory}}/{{svc_name}} state=directory
+
+- name: Upload relaysvr
+  copy: src=relaysvr dest={{working_directory}}/{{svc_name}}/relaysvr mode=655
+
+- name: Upload supervisor config for relaysvr
+  template: src=spvd.conf.j2 dest={{working_directory}}/{{svc_name}}/spvd.conf
+
+- name: Add relaysvr to supervisor
+  shell: cat "{{working_directory}}/{{svc_name}}/spvd.conf" >> "{{working_directory}}/supervisor/supervisord.conf"
+
+- name: Start/Restart relaysvr
+  command: supervisorctl reload

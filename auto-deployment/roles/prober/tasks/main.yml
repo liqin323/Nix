@@ -1,0 +1,22 @@
+---
+# This Playbook runs plays to install python2.7 environment
+
+- name: Make directory for prober
+  file: path={{working_directory}}/prober state=directory
+
+- name: Upload prober
+  copy: src=prober.py dest={{working_directory}}/prober/prober.py mode=655
+
+- name: Upload prober config
+  template: src=prober.yaml.j2 dest={{working_directory}}/prober/prober.yaml
+
+- name: Upload supervisor config for prober
+  template: src=spvd.conf.j2 dest={{working_directory}}/prober/spvd.conf
+
+- name: Upload running script
+  copy: src=run.sh dest={{working_directory}}/prober/run.sh mode=655
+
+- name: run prober
+  shell: ./run.sh
+  args:
+    chdir: "{{working_directory}}/prober"

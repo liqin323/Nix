@@ -1,0 +1,18 @@
+---
+# This Playbook runs plays to configure nagios service
+- name: Update nagios configure
+  copy: src=nagios.cfg dest=/usr/local/nagios/etc/nagios.cfg owner=nagios group=nagios mode=665
+
+- name: Upload object config
+  template: src=object.cfg.j2 dest=/usr/local/nagios/etc/objects/{{hostvars[item].host_name}}.cfg owner=nagios group=nagios mode=400
+  with_items: "{{groups['services']}}"
+
+- name: add config into nagios config
+  shell: echo "cfg_file=/usr/local/nagios/etc/objects/{{hostvars[item].host_name}}.cfg" >> /usr/local/nagios/etc/nagios.cfg
+  with_items: "{{groups['services']}}"
+
+- name: Restart nagios
+  service: name=nagios state=restarted
+
+- name: Restart nsca
+  service: name=nsca state=restarted

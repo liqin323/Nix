@@ -1,0 +1,81 @@
+[appsvc]
+172.21.1.105 host_name=app-cloudtest5 host_ip=172.21.1.105 host_port=80
+
+[appsvc:vars]
+tenant_name=SA3
+tenant_id=1234
+product_name=Test
+product_id=56789
+api_key_id=sonix
+api_key_secret=123456
+svc_domain=devapp.sohot.sonixcloud.com
+svc_port=80
+svc_ip=172.21.1.105
+svc_name=appsvr
+
+[tmsvc]
+172.21.1.106 host_name=tm-cloudtest6 host_ip=172.21.1.106 host_port=80 svc_name=trafficmanager
+
+[relaysvc]
+172.21.1.107 host_name=relay-cloudtest7 host_ip=172.21.1.107 host_port=80 svc_name=relaysvr
+
+[mongodb]
+172.21.1.102 primary=True index=0
+172.21.1.103 index=1
+172.21.1.108 index=2
+
+[mongodb:vars]
+replica_name=snxRep
+
+[svcmgr]
+172.21.1.109
+
+[nagios]
+172.21.1.78 ansible_ssh_user=root ansible_ssh_pass=centos6.5
+
+[versionsvc]
+172.21.1.110
+
+[logsvc]
+172.21.1.104 master=true
+
+[p2psvc]
+172.21.1.110 host_name=p2p-cloudtest10 host_ip=172.21.1.110
+172.21.1.104 host_name=p2p-cloudtest4 host_ip=172.21.1.104
+
+[p2psvc:vars]
+host_port=9000dhmr
+svc_name=p2psvr
+
+[all:children]
+appsvc
+tmsvc
+relaysvc
+mongodb
+svcmgr
+nagios
+versionsvc
+logsvc
+p2psvc
+
+[all:vars]
+working_directory=/home/liqin
+ansible_ssh_user=root
+ansible_ssh_pass=cloudtest
+
+[services:children]
+appsvc
+tmsvc
+relaysvc
+p2psvc
+
+[rabbitmq_cluster:children]
+logsvc
+appsvc
+tmsvc
+svcmgr
+
+[rabbitmq_cluster:vars]
+cookie=SONIXSERVICECLUSTERCD
+rabbitmq_user=admin2
+rabbitmq_pass=sonix123

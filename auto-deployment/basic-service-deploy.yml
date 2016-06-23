@@ -1,0 +1,92 @@
+---
+# This Playbook would deploy the whole sonix service cluster.
+
+- hosts: all
+  roles:
+    - role: python2.7
+
+- hosts: services
+  roles:
+    - role: supervisor
+    - role: prober
+#    - role: diamond
+
+- hosts: rabbitmq_cluster
+  sudo: yes
+  roles:
+    - role: rabbitmq-install
+    - role: rabbitmq-configure
+
+- hosts: mongodb
+  roles:
+    - role: supervisor
+    - role: mongodb-replica
+
+#- hosts: svcmgr
+#  roles:
+#    - role: svcmgr
+#
+- hosts: nagios
+  roles:
+    - role: nagios-configure
+#    - role: nagios-configure
+
+- hosts: appsvc
+  roles:
+    - role: supervisor
+    - role: prober
+    - role: appsvr
+
+- hosts: tmsvc
+  vars:
+    - appsvr_ip: "{{hostvars[groups['appsvc'][0]]['host_ip']}}"
+    - appsvr_port: "{{hostvars[groups['appsvc'][0]]['host_port']}}"
+    - applicant: SONiXSW3
+    - tenant_id: "{{hostvars[groups['appsvc'][0]]['tenant_id']}}"
+    - product_id: "{{hostvars[groups['appsvc'][0]]['product_id']}}"
+    - api_key: "{{hostvars[groups['appsvc'][0]]['api_key_id']}}:{{hostvars[groups['appsvc'][0]]['api_key_secret']}}"
+    - access_token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcGlfa2V5X2lkIjoiIiwiZXhwIjoxNzQ5ODg3MDMxLCJpZCI6IiIsInR5cGUiOjEwMjR9.0kJey_IoEorQxoAinYT42lf94cfZRbPEjCw9ne4FM4A
+    - svc_type: tm
+  roles:
+    - role: supervisor
+    - role: prober
+    - role: key-creation
+    - role: tmsvr
+
+- hosts: relaysvc
+  vars:
+    - appsvr_ip: "{{hostvars[groups['appsvc'][0]]['host_ip']}}"
+    - applicant: SONiXSW3
+    - tenant_id: "{{hostvars[groups['appsvc'][0]]['tenant_id']}}"
+    - product_id: "{{hostvars[groups['appsvc'][0]]['product_id']}}"
+    - api_key: "{{hostvars[groups['appsvc'][0]]['api_key_id']}}:{{hostvars[groups['appsvc'][0]]['api_key_secret']}}"
+    - access_token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcGlfa2V5X2lkIjoiIiwiZXhwIjoxNzQ5ODg3MDMxLCJpZCI6IiIsInR5cGUiOjEwMjR9.0kJey_IoEorQxoAinYT42lf94cfZRbPEjCw9ne4FM4A
+    - svc_type: relay
+  roles:
+    - role: supervisor
+    - role: prober
+    - role: key-creation
+    - role: relaysvr
+#
+#- hosts: versionsvc
+#  roles:
+#    - role: versionsvc
+#
+#- hosts: logsvc
+#  roles:
+#    - role: logsvc
+#
+- hosts: p2psvc
+  vars:
+    - appsvr_ip: "{{hostvars[groups['appsvc'][0]]['host_ip']}}"
+    - applicant: SONiXSW3
+    - tenant_id: "{{hostvars[groups['appsvc'][0]]['tenant_id']}}"
+    - product_id: "{{hostvars[groups['appsvc'][0]]['product_id']}}"
+    - api_key: "{{hostvars[groups['appsvc'][0]]['api_key_id']}}:{{hostvars[groups['appsvc'][0]]['api_key_secret']}}"
+    - access_token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcGlfa2V5X2lkIjoiIiwiZXhwIjoxNzQ5ODg3MDMxLCJpZCI6IiIsInR5cGUiOjEwMjR9.0kJey_IoEorQxoAinYT42lf94cfZRbPEjCw9ne4FM4A
+    - svc_type: p2p
+  roles:
+    - role: supervisor
+    - role: prober
+    - role: key-creation
+    - role: p2psvr

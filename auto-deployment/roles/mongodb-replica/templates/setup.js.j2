@@ -1,0 +1,22 @@
+/**
+ * Created by liqin on 1/29/16.
+ */
+
+var hosts=[];
+{% for host in groups['mongodb'] %}
+hosts.push("{{host}}")
+{% endfor %}
+
+var rsconf = new Object();
+rsconf._id = "{{replica_name}}"
+rsconf.members =[]
+
+for(var index=0; index < hosts.length;index++){
+    var member = new Object();
+    member._id=index
+    member.host=hosts[index]
+    rsconf.members.push(member)
+}
+
+rs.initiate(rsconf);
+

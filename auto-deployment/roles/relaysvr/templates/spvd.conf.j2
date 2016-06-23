@@ -1,0 +1,5 @@
+
+[program:{{svc_name}}]
+command={{working_directory}}/{{svc_name}}/{{svc_name}} -k ./{{host_name}} -a https://{{appsvr_ip}} -h http://{{host_ip}}:{{host_port}} -u {{api_key}} -p :{{host_port}} -l http://{{groups['logsvc'][0]}}
+autorestart=true
+directory={{working_directory}}/{{svc_name}}

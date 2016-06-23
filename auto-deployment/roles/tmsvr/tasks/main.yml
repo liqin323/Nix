@@ -1,0 +1,20 @@
+---
+# This Playbook runs plays to install tm
+
+- name: Make directory for tm
+  file: path={{working_directory}}/{{svc_name}} state=directory
+
+- name: Upload tm
+  copy: src={{svc_name}} dest={{working_directory}}/{{svc_name}}/{{svc_name}} mode=655
+
+- name: Upload config for tm
+  template: src=.profile.j2 dest={{working_directory}}/{{svc_name}}/.profile
+
+- name: Upload supervisor config for tm
+  template: src=spvd.conf.j2 dest={{working_directory}}/{{svc_name}}/spvd.conf
+
+- name: Add tm to supervisor
+  shell: cat "{{working_directory}}/{{svc_name}}/spvd.conf" >> "{{working_directory}}/supervisor/supervisord.conf"
+
+- name: Start/Restart relaysvr
+  command: supervisorctl reload

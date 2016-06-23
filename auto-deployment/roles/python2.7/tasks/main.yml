@@ -1,0 +1,45 @@
+---
+# This Playbook runs plays to install python2.7 environment
+
+- name: Install
+  sudo: yes
+  yum: name=libselinux-python state=present
+
+- name: Make directory for installing
+  file: path={{working_directory}}/python2.7 state=directory
+
+- name: Upload python archive
+  copy: src=Python-2.7.11.tgz dest={{working_directory}}/python2.7/Python-2.7.11.tgz
+
+- name: Upload install shell script
+  copy: src=install.sh dest={{working_directory}}/python2.7/install.sh mode=655
+
+- name: Upload ez_setup.py script
+  copy: src=ez_setup.py dest={{working_directory}}/python2.7/ez_setup.py mode=655
+
+- name: Install the latest version of openssl-devel
+  yum: name=openssl-devel state=present
+
+- name: Install gcc
+  yum: name=gcc-c++ state=present
+
+- name: Install python2.7 environment
+  sudo: yes
+  shell: ./install.sh
+  args:
+    chdir: "{{working_directory}}/python2.7"
+  ignore_errors: True
+
+- name: Install easy_install
+  sudo: yes
+  shell: /usr/local/bin/python2.7 ./ez_setup.py
+  args:
+    chdir: "{{working_directory}}/python2.7"
+
+- name: Install python2.7 pip
+  sudo: yes
+  shell: /usr/local/bin/easy_install-2.7 pip
+
+- name: Remove directory for installing
+  sudo: yes
+  file: path={{working_directory}}/python2.7 state=absent

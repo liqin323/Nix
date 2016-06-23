@@ -1,0 +1,5 @@
+
+[program:mongodb]
+command={{working_directory}}/mongodb/bin/mongod --dbpath {{working_directory}}/mongodb/data/{{replica_name}}-{{index}} --replSet {{replica_name}} --smallfiles --oplogSize 128
+autorestart=true
+directory={{working_directory}}/mongodb/bin

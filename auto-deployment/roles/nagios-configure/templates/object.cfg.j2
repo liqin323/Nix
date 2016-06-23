@@ -1,0 +1,43 @@
+define host{
+ use  linux-server
+ host_name {{hostvars[item].host_name}}
+ alias  {{hostvars[item].host_name}}
+ address  {{hostvars[item].host_ip}}
+}
+
+define service{
+ use   			passive_service,srv-pnp
+ host_name  		{{hostvars[item].host_name}}
+ service_description 	System CPU
+}
+
+define service{
+ use                    passive_service,srv-pnp
+ host_name              {{hostvars[item].host_name}}
+ service_description    System Memory
+}
+
+define service{
+ use                    passive_service,srv-pnp
+ host_name              {{hostvars[item].host_name}}
+ service_description    System Net
+}
+
+define service{
+ use                    passive_service,srv-pnp
+ host_name              {{hostvars[item].host_name}}
+ service_description    {{hostvars[item].svc_name}} Live
+}
+
+define service{
+ use                    passive_service,srv-pnp
+ host_name              {{hostvars[item].host_name}}
+ service_description    {{hostvars[item].svc_name}} CPU
+}
+
+define service{
+ use                    passive_service,srv-pnp
+ host_name              {{hostvars[item].host_name}}
+ service_description    {{hostvars[item].svc_name}} Memory
+}
+

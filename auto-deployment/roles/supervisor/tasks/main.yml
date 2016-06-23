@@ -1,0 +1,23 @@
+---
+# This Playbook runs plays to install diamond
+
+- name: Make directory for supervisor
+  file: path={{working_directory}}/supervisor state=directory
+
+- name: Upload supervisor config file
+  copy: src=supervisord.conf dest={{working_directory}}/supervisor/supervisord.conf
+
+- name: install supervisor
+  shell: /usr/local/bin/pip2.7 install supervisor
+
+- name: kill supervisord if it exists
+  shell: pkill supervisord
+  ignore_errors: True
+
+- name: wait for spervisord stopped
+  wait_for:  port=9001 delay=2 state=stopped
+
+- name: start supervisor
+  shell: /usr/local/bin/supervisord -c ./supervisord.conf
+  args:
+    chdir: "{{working_directory}}/supervisor"

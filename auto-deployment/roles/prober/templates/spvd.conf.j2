@@ -1,0 +1,5 @@
+
+[program:prober]
+command=/usr/local/bin/python2.7 {{working_directory}}/prober/prober.py -c {{working_directory}}/prober/prober.yaml
+autorestart=true
+directory={{working_directory}}/prober

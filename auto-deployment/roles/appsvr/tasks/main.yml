@@ -1,0 +1,28 @@
+---
+# This Playbook runs plays to install appsvr
+
+- name: Make directory for appsvr
+  file: path={{working_directory}}/{{svc_name}} state=directory
+
+- file: path={{working_directory}}/{{svc_name}}/keys state=directory
+
+- name: Upload appsvr profile
+  template: src=.profile.j2 dest={{working_directory}}/{{svc_name}}/.profile mode=400
+
+- name: Upload appsvr
+  copy: src={{svc_name}} dest={{working_directory}}/{{svc_name}}/{{svc_name}} mode=655
+
+- name: Upload appsvr crt
+  copy: src={{svc_domain}}.crt dest={{working_directory}}/{{svc_name}}/{{svc_domain}}.crt mode=400
+
+- name: Upload appsvr key
+  copy: src={{svc_domain}}.key dest={{working_directory}}/{{svc_name}}/{{svc_domain}}.key mode=400
+
+- name: Upload supervisor config for appsvr
+  template: src=spvd.conf.j2 dest={{working_directory}}/{{svc_name}}/spvd.conf
+
+- name: Add appsvr to supervisor
+  shell: cat "{{working_directory}}/{{svc_name}}/spvd.conf" >> "{{working_directory}}/supervisor/supervisord.conf"
+
+- name: Start/Restart appsvr
+  command: supervisorctl reload

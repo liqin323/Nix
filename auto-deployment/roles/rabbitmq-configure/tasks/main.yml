@@ -1,0 +1,55 @@
+---
+# This role runs tasks to configure rabbitmq cluster
+- name: Make directory for rabbitmq
+  file: path={{working_directory}}/rabbitmq state=directory
+
+- name: Upload hosts for rabbitmq cluster
+  template: src=host.j2 dest={{working_directory}}/rabbitmq/hosts
+
+- name: Upload hosts for rabbitmq cluster
+  shell: cat ./hosts > /etc/hosts
+  args:
+    chdir: "{{working_directory}}/rabbitmq"
+
+- name: Configure erlang cookie
+  template: src=.erlang.cookie.j2 dest=/var/lib/rabbitmq/.erlang.cookie owner=rabbitmq group=rabbitmq mode=400
+
+- name: Remove old configs
+  file: path=/var/lib/rabbitmq/mnesia state=absent
+
+- name: stop rabbitmq server
+  service: name=rabbitmq-server state=stopped
+
+- name: start rabbitmq server
+  service: name=rabbitmq-server state=started
+
+- name: Install rabbitmq management
+  shell: rabbitmq-plugins enable rabbitmq_management
+
+- name: Stop app
+  shell: rabbitmqctl stop_app
+  when: master is not defined
+
+- name: Reset app
+  shell: rabbitmqctl reset
+  when: master is not defined
+
+- name: join cluster
+  shell: rabbitmqctl join_cluster --ram rabbit@{{hostvars[groups['rabbitmq_cluster'][0]]['ansible_nodename']}}
+  when: master is not defined
+
+- name: restart app
+  shell: rabbitmqctl start_app
+  when: master is not defined
+
+- name: Add user
+  shell: rabbitmqctl add_user "{{rabbitmq_user}}" "{{rabbitmq_pass}}"
+  when: master is defined
+
+- name: Set user flag
+  shell: rabbitmqctl set_user_tags "{{rabbitmq_user}}" administrator
+  when: master is defined
+
+- name: Set user permissions
+  shell: rabbitmqctl set_permissions -p "/" "{{rabbitmq_user}}" ".*" ".*" ".*"
+  when: master is defined

@@ -1,0 +1,17 @@
+---
+# This Playbook runs plays to install p2p server
+
+- name: Make directory for p2psvr
+  file: path={{working_directory}}/{{svc_name}} state=directory
+
+- name: Upload p2psvr
+  copy: src=p2psvr dest={{working_directory}}/{{svc_name}}/p2psvr mode=655
+
+- name: Upload supervisor config for p2psvr
+  template: src=spvd.conf.j2 dest={{working_directory}}/{{svc_name}}/spvd.conf
+
+- name: Add p2psvr to supervisor
+  shell: cat "{{working_directory}}/{{svc_name}}/spvd.conf" >> "{{working_directory}}/supervisor/supervisord.conf"
+
+- name: Start/Restart p2psvr
+  command: supervisorctl reload

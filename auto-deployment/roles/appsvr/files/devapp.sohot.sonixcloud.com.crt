@@ -1,0 +1,84 @@
+Certificate:
+    Data:
+        Version: 3 (0x2)
+        Serial Number: 11 (0xb)
+    Signature Algorithm: sha256WithRSAEncryption
+        Issuer: CN=SONiX Cloud Service
+        Validity
+            Not Before: Sep  2 05:35:29 2015 GMT
+            Not After : Aug 30 05:35:29 2025 GMT
+        Subject: CN=devapp.sohot.sonixcloud.com
+        Subject Public Key Info:
+            Public Key Algorithm: rsaEncryption
+                Public-Key: (2048 bit)
+                Modulus:
+                    00:cb:af:38:4d:32:0b:96:84:56:73:21:4e:c4:56:
+                    cd:18:f0:6c:fc:01:74:85:bc:a8:74:d4:82:3e:53:
+                    0b:51:58:ad:6c:1d:c3:b0:f0:3d:7b:68:47:77:93:
+                    50:c5:e7:ee:0f:9a:cf:0c:fb:e2:a7:80:92:ce:83:
+                    78:e7:08:cd:74:a1:e5:f2:27:7a:5b:12:c0:9f:c9:
+                    2c:7a:8c:3d:5c:b8:dc:6b:43:7c:ed:a9:09:14:9b:
+                    c9:3c:57:1f:9d:3c:40:05:c3:d1:05:07:16:e3:7d:
+                    36:f2:ed:26:65:bc:49:05:86:0d:e6:06:ce:45:97:
+                    f6:ac:52:13:09:2a:a7:03:64:bc:92:fa:96:e7:57:
+                    84:e2:e0:f4:cc:d2:3a:e8:6f:9a:99:1e:92:5a:93:
+                    1d:ae:24:42:18:1e:4d:af:4b:85:53:a9:4d:96:59:
+                    c8:28:eb:d5:fc:0e:23:d4:64:c3:3b:66:f2:3d:ee:
+                    1a:61:b7:08:5c:18:fa:bc:b2:51:e7:c7:61:12:e1:
+                    f3:b7:d7:bd:d8:35:95:ca:26:a7:8d:28:79:7f:c5:
+                    a8:d7:15:70:5e:4d:86:9b:f8:96:09:cf:fb:d1:a7:
+                    04:7c:da:e7:b9:f1:68:f1:ae:e1:40:db:47:4d:d5:
+                    db:7c:0d:e8:67:0f:f1:c8:2f:8c:3a:6d:40:61:ce:
+                    c9:d9
+                Exponent: 65537 (0x10001)
+        X509v3 extensions:
+            X509v3 Basic Constraints: 
+                CA:FALSE
+            X509v3 Subject Key Identifier: 
+                E6:BA:4D:B3:94:14:FF:6D:CE:A0:0E:F6:1C:F7:F3:D6:14:C7:48:4A
+            X509v3 Authority Key Identifier: 
+                keyid:21:3B:3D:FF:56:36:2C:6F:FE:AB:E0:A8:DE:9D:CC:D0:8D:18:8C:0B
+                DirName:/CN=SONiX Cloud Service
+                serial:B4:A5:4C:F1:D6:6B:24:BB
+
+            X509v3 Extended Key Usage: 
+                TLS Web Server Authentication
+            X509v3 Key Usage: 
+                Digital Signature, Key Encipherment
+    Signature Algorithm: sha256WithRSAEncryption
+         16:3b:16:f3:70:18:6d:ff:73:94:77:53:b0:b6:c7:52:06:c9:
+         a7:3d:6a:ef:fd:89:d9:b3:33:4c:a4:64:96:22:db:40:de:b3:
+         b4:d8:32:5c:50:f5:64:d0:e9:9a:39:d0:a1:24:20:d3:1c:5e:
+         e7:f7:a2:5d:2b:2f:f2:56:91:c4:cb:e5:a5:e1:35:37:1f:cb:
+         13:d9:ba:1b:14:e6:2f:0a:91:8c:30:4e:af:08:93:3a:f7:9e:
+         8c:8e:a6:44:ad:5c:c7:60:ee:d3:7a:64:e1:4c:66:fc:0c:f0:
+         f2:b6:71:64:96:85:38:e3:e8:69:23:41:63:dd:71:65:a8:ac:
+         de:95:6e:29:c1:da:8c:e0:bd:21:14:e5:13:19:a7:cc:09:e6:
+         e3:71:f9:d8:d2:5c:5d:48:e2:84:a7:38:c7:8c:0a:35:62:bc:
+         a4:1c:76:5c:72:87:2b:20:fc:0c:ed:ce:a1:15:65:48:f0:c0:
+         61:3a:8d:83:0b:66:a4:ce:5f:39:a1:d1:90:8e:d6:ed:bb:3e:
+         4f:ce:25:f0:fa:71:49:4c:d1:f8:e8:30:50:20:44:85:49:20:
+         f3:6f:b4:f2:37:a6:da:af:82:8e:0e:a5:c5:9f:3e:58:c5:53:
+         c5:cc:39:c1:19:e6:19:b8:ba:63:2a:42:c0:cc:91:12:b4:cd:
+         34:0b:d4:9f
+-----BEGIN CERTIFICATE-----
+MIIDXzCCAkegAwIBAgIBCzANBgkqhkiG9w0BAQsFADAeMRwwGgYDVQQDExNTT05p
+WCBDbG91ZCBTZXJ2aWNlMB4XDTE1MDkwMjA1MzUyOVoXDTI1MDgzMDA1MzUyOVow
+JjEkMCIGA1UEAxMbZGV2YXBwLnNvaG90LnNvbml4Y2xvdWQuY29tMIIBIjANBgkq
+hkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAy684TTILloRWcyFOxFbNGPBs/AF0hbyo
+dNSCPlMLUVitbB3DsPA9e2hHd5NQxefuD5rPDPvip4CSzoN45wjNdKHl8id6WxLA
+n8kseow9XLjca0N87akJFJvJPFcfnTxABcPRBQcW43028u0mZbxJBYYN5gbORZf2
+rFITCSqnA2S8kvqW51eE4uD0zNI66G+amR6SWpMdriRCGB5Nr0uFU6lNllnIKOvV
+/A4j1GTDO2byPe4aYbcIXBj6vLJR58dhEuHzt9e92DWVyianjSh5f8Wo1xVwXk2G
+m/iWCc/70acEfNrnufFo8a7hQNtHTdXbfA3oZw/xyC+MOm1AYc7J2QIDAQABo4Gf
+MIGcMAkGA1UdEwQCMAAwHQYDVR0OBBYEFOa6TbOUFP9tzqAO9hz389YUx0hKME4G
+A1UdIwRHMEWAFCE7Pf9WNixv/qvgqN6dzNCNGIwLoSKkIDAeMRwwGgYDVQQDExNT
+T05pWCBDbG91ZCBTZXJ2aWNlggkAtKVM8dZrJLswEwYDVR0lBAwwCgYIKwYBBQUH
+AwEwCwYDVR0PBAQDAgWgMA0GCSqGSIb3DQEBCwUAA4IBAQAWOxbzcBht/3OUd1Ow
+tsdSBsmnPWrv/YnZszNMpGSWIttA3rO02DJcUPVk0OmaOdChJCDTHF7n96JdKy/y
+VpHEy+Wl4TU3H8sT2bobFOYvCpGMME6vCJM6956MjqZErVzHYO7TemThTGb8DPDy
+tnFkloU44+hpI0Fj3XFlqKzelW4pwdqM4L0hFOUTGafMCebjcfnY0lxdSOKEpzjH
+jAo1YrykHHZccocrIPwM7c6hFWVI8MBhOo2DC2akzl85odGQjtbtuz5PziXw+nFJ
+TNH46DBQIESFSSDzb7TyN6bar4KODqXFnz5YxVPFzDnBGeYZuLpjKkLAzJEStM00
+C9Sf
+-----END CERTIFICATE-----

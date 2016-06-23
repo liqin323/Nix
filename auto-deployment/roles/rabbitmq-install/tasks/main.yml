@@ -1,0 +1,38 @@
+---
+# This role runs plays to install rabbitmq
+
+- name: Make directory for rabbitmq
+  file: path={{working_directory}}/rabbitmq state=directory
+
+- copy: src=wxBase-2.8.12-1.el6.centos.x86_64.rpm dest={{working_directory}}/rabbitmq/wxBase-2.8.12-1.el6.centos.x86_64.rpm
+- copy: src=wxGTK-2.8.12-1.el6.centos.x86_64.rpm dest={{working_directory}}/rabbitmq/wxGTK-2.8.12-1.el6.centos.x86_64.rpm
+- copy: src=wxGTK-gl-2.8.12-1.el6.centos.x86_64.rpm dest={{working_directory}}/rabbitmq/wxGTK-gl-2.8.12-1.el6.centos.x86_64.rpm
+- copy: src=esl-erlang_18.0-1~centos~6_amd64.rpm dest={{working_directory}}/rabbitmq/esl-erlang_18.0-1~centos~6_amd64.rpm
+- copy: src=rabbitmq-server-3.5.3-1.noarch.rpm dest={{working_directory}}/rabbitmq/rabbitmq-server-3.5.3-1.noarch.rpm
+
+- name: Install the latest version of gcc-c++
+  yum: name=gcc-c++ state=present
+
+- name: Install the latest version of unixODBC-devel
+  yum: name=unixODBC-devel state=present
+
+- name: Install the latest version of SDL-devel
+  yum: name=SDL-devel state=present
+
+- name: Install wxBase-2.8.12-1.el6.centos.x86_64
+  yum: name={{working_directory}}/rabbitmq/wxBase-2.8.12-1.el6.centos.x86_64.rpm state=present
+
+- name: Install wxGTK-2.8.12-1.el6.centos.x86_64
+  yum: name={{working_directory}}/rabbitmq/wxGTK-2.8.12-1.el6.centos.x86_64.rpm state=present
+
+- name: Install wxGTK-gl-2.8.12-1.el6.centos.x86_64
+  yum: name={{working_directory}}/rabbitmq/wxGTK-gl-2.8.12-1.el6.centos.x86_64.rpm state=present
+
+- name: Install esl-erlang_18.0-1~centos~6_amd64
+  yum: name={{working_directory}}/rabbitmq/esl-erlang_18.0-1~centos~6_amd64.rpm state=present
+
+- name: Install rabbitmq-server-3.5.3-1.noarch
+  command: rpm -ivh --nodeps rabbitmq-server-3.5.3-1.noarch.rpm
+  args:
+    chdir: "{{working_directory}}/rabbitmq"
+

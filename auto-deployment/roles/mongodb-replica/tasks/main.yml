@@ -1,0 +1,48 @@
+---
+# This role runs plays to install and run mongodb
+- name: Remove mongodb foler if it exists
+  file: path={{working_directory}}/mongodb state=absent
+
+- name: Upload archive
+  copy: src=mongodb-linux-x86_64-rhel62-3.0.7.tgz dest={{working_directory}}/mongodb-linux-x86_64-rhel62-3.0.7.tgz
+
+- name: Unpackage archive
+  shell: tar -zxf mongodb-linux-x86_64-rhel62-3.0.7.tgz
+  args:
+    chdir: "{{working_directory}}"
+
+- name: Change directory name to mongodb
+  command: mv "{{working_directory}}/mongodb-linux-x86_64-rhel62-3.0.7" "{{working_directory}}/mongodb"
+
+- name: Remove archive
+  file: path={{working_directory}}/mongodb-linux-x86_64-rhel62-3.0.7.tgz state=absent
+
+- name: Make directory for data
+  file: path={{working_directory}}/mongodb/data/{{replica_name}}-{{index}} state=directory
+
+- name: Upload supervisor config for mongodb
+  template: src=spvd.conf.j2 dest={{working_directory}}/mongodb/spvd.conf
+
+- name: Add mongodb to supervisor
+  shell: cat "{{working_directory}}/mongodb/spvd.conf" >> "{{working_directory}}/supervisor/supervisord.conf"
+
+- name: Start/Restart mongodb
+  command: supervisorctl reload
+
+- name: wait for mongodb started
+  wait_for: port=27017 delay=3
+
+- name: Upload setup script
+  template: src=setup.js.j2 dest={{working_directory}}/mongodb/setup.js
+  when: primary is defined
+
+- name: Execute setup script
+  shell: bin/mongo setup.js
+  args:
+    chdir: "{{working_directory}}/mongodb"
+  when: primary is defined
+
+
+
+
+

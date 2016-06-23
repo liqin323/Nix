@@ -1,0 +1,19 @@
+---
+# This Playbook runs plays to install diamond
+
+- name: Make directory for diamond
+  file: path={{working_directory}}/diamond state=directory
+
+- name: Upload diamond config file
+  copy: src=diamond.conf dest={{working_directory}}/diamond/diamond.conf
+
+- name: Upload supervisor config for diamond
+  template: src=spvd.conf.j2 dest={{working_directory}}/diamond/spvd.conf
+
+- name: Upload running script
+  copy: src=run.sh dest={{working_directory}}/diamond/run.sh mode=655
+
+- name: run diamond
+  shell: ./run.sh
+  args:
+    chdir: "{{working_directory}}/diamond"

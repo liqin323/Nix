@@ -1,0 +1,16 @@
+---
+# This Playbook create key for service
+
+- name: Make directory for p2psvr
+  file: path={{working_directory}}/{{svc_name}} state=directory
+
+- name: Install python library
+  shell: /usr/local/bin/pip2.7 install requests
+
+- name: Update creation script
+  copy: src=createKey.py dest={{working_directory}}/{{svc_name}}/createKey.py mode=655
+
+- name: Create key for service
+  shell: /usr/local/bin/python2.7 ./createKey.py --ip {{appsvr_ip}} --applicant {{applicant}} --tenant {{tenant_id}} --product {{product_id}} --key {{api_key}} --token {{access_token}} --name {{host_name}} --type {{svc_type}}
+  args:
+    chdir: "{{[working_directory, svc_name] | join('/')}}"

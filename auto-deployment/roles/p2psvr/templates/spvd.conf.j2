@@ -1,0 +1,9 @@
+
+[program:{{svc_name}}]
+{% if groups['p2psvc'][0] == host_ip %}
+command={{working_directory}}/{{svc_name}}/{{svc_name}} -k ./{{host_name}} -a https://{{appsvr_ip}} -h udp://{{host_ip}}:{{host_port}} -u {{api_key}} -p :{{host_port}} -l http://{{groups['logsvc'][0]}} -s {{groups['p2psvc'][1]}}:{{host_port}}
+{% else %}
+command={{working_directory}}/{{svc_name}}/{{svc_name}} -k ./{{host_name}} -a https://{{appsvr_ip}} -h udp://{{host_ip}}:{{host_port}} -u {{api_key}} -p :{{host_port}} -l http://{{groups['logsvc'][0]}} -s {{groups['p2psvc'][0]}}:{{host_port}}
+{% endif %}
+autorestart=true
+directory={{working_directory}}/{{svc_name}}
